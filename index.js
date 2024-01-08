@@ -31,14 +31,13 @@ app.use(cors(corsOptions));
 
 // API endpoint
 app.get('/send-notification', (req, res) => {
+    const content = req.query.content;
     const accessToken = process.env.ACCESS_TOKEN || 'YOUR_ACCESS_TOKEN';
     const notifyEndpoint = 'https://notify-api.line.me/api/notify';
-    console.log(`Giờ Việt Nam: ${currentTimeVN}`);
-    const message = `Lịch nhắc: Bây giờ là ${currentTimeVN}`;
 
     axios.post(
         notifyEndpoint,
-        `message=${message}`,
+        `message=${content}`,
         {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
