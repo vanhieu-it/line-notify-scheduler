@@ -6,6 +6,9 @@ const PORT = 3000;
 app.use(cors());
 require('dotenv').config();
 const currentTime = new Date();
+const currentTimeVN = new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' });
+
+
 const allowedOrigins = [
     'http://localhost:3000',
 ];
@@ -28,7 +31,8 @@ app.use(cors(corsOptions));
 app.get('/send-notification', (req, res) => {
     const accessToken = process.env.ACCESS_TOKEN || 'YOUR_ACCESS_TOKEN';
     const notifyEndpoint = 'https://notify-api.line.me/api/notify';
-    const message = `Lịch nhắc: Bây giờ là ${currentTime.getHours()} giờ ${currentTime.getMinutes()} phút ${currentTime.getSeconds()} giây!`;
+    console.log(`Giờ Việt Nam: ${currentTimeVN}`);
+    const message = `Lịch nhắc: Bây giờ là ${currentTimeVN}`;
 
     axios.post(
         notifyEndpoint,
