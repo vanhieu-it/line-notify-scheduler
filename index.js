@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.use(cors());
 require('dotenv').config();
 const currentTime = new Date();
