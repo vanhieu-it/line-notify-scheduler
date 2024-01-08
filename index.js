@@ -6,7 +6,6 @@ const PORT = 3000;
 app.use(cors());
 require('dotenv').config();
 const currentTime = new Date();
-const currentTimeVN = new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' });
 
 
 const allowedOrigins = [
@@ -34,7 +33,7 @@ app.get('/send-notification', (req, res) => {
     const content = req.query.content;
     const accessToken = process.env.ACCESS_TOKEN || 'YOUR_ACCESS_TOKEN';
     const notifyEndpoint = 'https://notify-api.line.me/api/notify';
-
+    const currentTimeVN = new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' });
     axios.post(
         notifyEndpoint,
         `message=${content}`,
@@ -47,10 +46,12 @@ app.get('/send-notification', (req, res) => {
     )
         .then(response => {
             res.status(200).json({ success: true, message: 'Thông báo đã được gửi!' });
+            console.log(`Thông báo đã được gửi!: ${currentTimeVN}`);
         })
         .catch(error => {
             console.error('Lỗi:', error.response.data);
             res.status(500).json({ success: false, message: 'Lỗi gửi thông báo!' });
+            console.log(`Lỗi gửi thông báo!: ${currentTimeVN}`);
         });
 });
 
