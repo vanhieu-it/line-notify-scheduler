@@ -10,7 +10,7 @@ const accessToken = process.env.ACCESS_TOKEN; // Sử dụng biến môi trườ
 const notifyEndpoint = 'https://notify-api.line.me/api/notify';
 const message = 'Lịch nhắc: Test';
 
-const job = schedule.scheduleJob('59 10 * * *', () => {
+const job = schedule.scheduleJob('04 11 * * *', () => {
     axios.post(
         notifyEndpoint,
         `message=${message}`,
@@ -37,4 +37,4 @@ index.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-module.exports = express;
+module.exports = index;
