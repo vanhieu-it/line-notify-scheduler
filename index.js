@@ -10,7 +10,7 @@ const accessToken = process.env.ACCESS_TOKEN; // Sử dụng biến môi trườ
 const notifyEndpoint = 'https://notify-api.line.me/api/notify';
 const message = 'Lịch nhắc: Test';
 
-const job = schedule.scheduleJob('55 10 * * *', () => {
+const job = schedule.scheduleJob('59 10 * * *', () => {
     axios.post(
         notifyEndpoint,
         `message=${message}`,
