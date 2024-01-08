@@ -1,16 +1,35 @@
 const express = require('express');
-const index = express();
 const axios = require('axios');
-const schedule = require('node-schedule');
-require('dotenv').config(); // Đọc biến môi trường từ file .env
+const cors = require('cors');
+const app = express();
+const PORT = process.env.PORT || 3000;
+app.use(cors());
+require('dotenv').config();
+const currentTime = new Date();
+const allowedOrigins = [
+    'http://localhost:3000',
+];
+const corsOptions = {
+    origin: (origin, callback) => {
+        // Kiểm tra xem origin có trong danh sách được phép hay không
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
 
+// API endpoint
+app.get('/send-notification', (req, res) => {
+    const accessToken = process.env.ACCESS_TOKEN || 'YOUR_ACCESS_TOKEN';
+    const notifyEndpoint = 'https://notify-api.line.me/api/notify';
+    const message = `Lịch nhắc: Bây giờ là ${currentTime.getHours()} giờ ${currentTime.getMinutes()} phút ${currentTime.getSeconds()} giây!`;
 
-
-const accessToken = process.env.ACCESS_TOKEN; // Sử dụng biến môi trường
-const notifyEndpoint = 'https://notify-api.line.me/api/notify';
-const message = 'Lịch nhắc: Test';
-
-const job = schedule.scheduleJob('04 11 * * *', () => {
     axios.post(
         notifyEndpoint,
         `message=${message}`,
@@ -22,19 +41,18 @@ const job = schedule.scheduleJob('04 11 * * *', () => {
         }
     )
         .then(response => {
-            console.log('Thành công:', response.data);
+            res.status(200).json({ success: true, message: 'Thông báo đã được gửi!' });
         })
         .catch(error => {
             console.error('Lỗi:', error.response.data);
+            res.status(500).json({ success: false, message: 'Lỗi gửi thông báo!' });
         });
 });
 
-console.log('Đã đặt lịch gửi thông báo hàng ngày.');
-
-const PORT =  3000;
-
-index.listen(PORT, () => {
+// Lắng nghe các yêu cầu
+app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-module.exports = index;
+
+module.exports = app;
