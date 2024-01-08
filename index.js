@@ -11,16 +11,18 @@ const currentTimeVN = new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Ch
 
 const allowedOrigins = [
     'http://localhost:3000',
+
 ];
 const corsOptions = {
-    origin: (origin, callback) => {
-        // Kiểm tra xem origin có trong danh sách được phép hay không
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    // origin: (origin, callback) => {
+    //     // Kiểm tra xem origin có trong danh sách được phép hay không
+    //     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    //         callback(null, true);
+    //     } else {
+    //         callback(new Error('Not allowed by CORS'));
+    //     }
+    // },
+    origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204,
